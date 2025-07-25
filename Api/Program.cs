@@ -2,6 +2,9 @@
 using Carter;
 using Microsoft.EntityFrameworkCore;
 
+using Api;
+using Api.CalculationsApi;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -11,7 +14,13 @@ builder.Services.AddCarter();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
 app.MapCarter();
 app.Run();
+
+public class CalculationModule : ICarterModule
+{
+    public void AddRoutes(IEndpointRouteBuilder routes)
+    {
+        routes.MapPost("/calculations", CalculationHandlers.HandleAddCalculation);
+    }
+}
