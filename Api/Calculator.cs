@@ -1,13 +1,5 @@
 namespace Api
 {
-    public interface ICalculator
-    {
-        public double Add(List<double> operands);
-        public double Subtract(List<double> operands);
-        public double Multiply(List<double> operands);
-        public double Divide(List<double> operands);
-    }
-
     public class Calculator
     {
         public static double Add(List<double> operands)
