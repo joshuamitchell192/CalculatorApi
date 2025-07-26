@@ -2,6 +2,7 @@ using Carter;
 using Microsoft.EntityFrameworkCore;
 using Api;
 using Api.Calculations;
+using Api.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 

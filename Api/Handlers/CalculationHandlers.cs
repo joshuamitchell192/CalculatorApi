@@ -1,11 +1,9 @@
-namespace Api;
+namespace Api.Handlers;
 
 using Carter.ModelBinding;
 using FluentValidation;
-
 using Api.Calculations;
 using Api.Extensions;
-
 
 public class CalculationRequestBody
 {
@@ -123,6 +121,7 @@ public static class CalculationHandlers
             {
                 return Results.InternalServerError("Failed to delete calculation.");
             }
+
             return Results.NoContent();
         }
         catch (EntityNotFoundException)
