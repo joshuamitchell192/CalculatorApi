@@ -9,7 +9,9 @@ public class AppDbContext : DbContext
 {
     public DbSet<Calculation> Calculations { get; set; } = null!;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

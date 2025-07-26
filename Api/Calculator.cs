@@ -6,7 +6,7 @@ namespace Api
         {
             return operands.Sum();
         }
-        
+
         public static double Subtract(List<double> operands)
         {
             return operands.Aggregate((a, b) => a - b);
@@ -32,7 +32,7 @@ namespace Api
                 "divide" => Divide(operands),
                 _ => throw new InvalidOperationException("Unexpected operation"),
             };
-            
+
             return result;
         }
     }

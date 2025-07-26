@@ -60,7 +60,8 @@ public static class CalculationHandlers
             : Results.InternalServerError("Failed to save calculation.");
     }
 
-    public static async Task<IResult> HandleUpdateCalculation(HttpContext ctx, Guid id, CalculationRequestBody requestBody,
+    public static async Task<IResult> HandleUpdateCalculation(HttpContext ctx, Guid id,
+        CalculationRequestBody requestBody,
         ICalculationsService calculationService)
     {
         var existingCalculation = await calculationService.GetCalculation(id);
@@ -68,15 +69,15 @@ public static class CalculationHandlers
         {
             return Results.NotFound();
         }
-        
+
         var validationResult = ctx.Request.Validate(requestBody);
         if (!validationResult.IsValid)
         {
             return Results.UnprocessableEntity(validationResult.GetFormattedErrors());
         }
-        
+
         var result = Calculator.Calculate(requestBody.Operation, requestBody.Operands);
-        
+
         existingCalculation.Operands = requestBody.Operands;
         existingCalculation.Operation = requestBody.Operation;
         existingCalculation.Result = result;
@@ -87,7 +88,7 @@ public static class CalculationHandlers
             ? Results.Ok(new { result })
             : Results.InternalServerError("Failed to update calculation.");
     }
-    
+
     public static async Task<IResult> HandleGetAllCalculations(HttpContext ctx, ICalculationsService calculationService)
     {
         var calculations = await calculationService.GetAllCalculations();
@@ -97,14 +98,15 @@ public static class CalculationHandlers
         return Results.Ok(calculationDtoList);
     }
 
-    public static async Task<IResult> HandleGetCalculation(HttpContext ctx, Guid id, ICalculationsService calculationService)
+    public static async Task<IResult> HandleGetCalculation(HttpContext ctx, Guid id,
+        ICalculationsService calculationService)
     {
         var calculation = await calculationService.GetCalculation(id);
         if (calculation == null)
         {
             return Results.NotFound();
         }
-        
+
         return Results.Ok(calculation);
     }
 }
