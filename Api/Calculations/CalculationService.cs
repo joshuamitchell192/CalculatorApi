@@ -34,11 +34,24 @@ public class CalculationService(AppDbContext db) : ICalculationsService
         return await db.Calculations.ToListAsync();
     }
 
+    /// <summary>
+    /// Retrieves the calculation entity from the database.
+    /// </summary>
+    /// <param name="id">The id of the calculation entity.</param>
+    /// <returns></returns>
     public async Task<Calculation?> GetCalculation(Guid id)
     {
         return await db.Calculations.FindAsync(id);
     }
 
+    /// <summary>
+    /// Deletes the calculation entity.
+    /// </summary>
+    /// <param name="id">The id of the calculation entity.</param>
+    /// <returns>True if the entity was successfully deleted, otherwise false.</returns>
+    /// <exception cref="EntityNotFoundException">
+    ///     Throws an EntityNotFoundException if the entity does not exist in the database.
+    /// </exception>
     public async Task<bool> DeleteCalculation(Guid id)
     {
         var calculation = await db.Calculations.FindAsync(id);

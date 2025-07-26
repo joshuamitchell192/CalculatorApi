@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Text.Json;
 using NodaTime;
+using Api.Calculations;
 
 public class AppDbContext : DbContext
 {
@@ -34,13 +35,4 @@ public class AppDbContext : DbContext
                 v => Instant.FromDateTimeUtc(DateTime.SpecifyKind(v, DateTimeKind.Utc))
             );
     }
-}
-
-public class Calculation
-{
-    public Guid Id { get; set; }
-    public string Operation { get; set; } = string.Empty;
-    public List<double> Operands { get; set; } = [];
-    public double Result { get; set; }
-    public Instant CreatedAt { get; set; }
 }

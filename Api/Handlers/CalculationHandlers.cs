@@ -48,7 +48,7 @@ public static class CalculationHandlers
         var calculation = new Calculation
         {
             Id = Guid.NewGuid(),
-            Operation = requestBody.Operation,
+            Operation = requestBody.Operation.ToLower(),
             Operands = requestBody.Operands,
             Result = result,
             CreatedAt = NodaTime.SystemClock.Instance.GetCurrentInstant()
@@ -80,7 +80,7 @@ public static class CalculationHandlers
         var result = Calculator.Calculate(requestBody.Operation, requestBody.Operands);
 
         existingCalculation.Operands = requestBody.Operands;
-        existingCalculation.Operation = requestBody.Operation;
+        existingCalculation.Operation = requestBody.Operation.ToLower();
         existingCalculation.Result = result;
 
         bool saved = await calculationService.UpdateCalculation(existingCalculation);
