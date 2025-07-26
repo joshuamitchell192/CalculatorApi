@@ -1,8 +1,11 @@
-using Api.Calculations;
+namespace Api;
+
 using Carter.ModelBinding;
 using FluentValidation;
 
-namespace Api;
+using Api.Calculations;
+using Api.Extensions;
+
 
 public class CalculationRequestBody
 {
@@ -108,5 +111,23 @@ public static class CalculationHandlers
         }
 
         return Results.Ok(calculation);
+    }
+
+    public static async Task<IResult> HandleDeleteCalculation(HttpContext ctx, Guid id,
+        ICalculationsService calculationService)
+    {
+        try
+        {
+            var res = await calculationService.DeleteCalculation(id);
+            if (!res)
+            {
+                return Results.InternalServerError("Failed to delete calculation.");
+            }
+            return Results.NoContent();
+        }
+        catch (EntityNotFoundException)
+        {
+            return Results.NotFound();
+        }
     }
 }
