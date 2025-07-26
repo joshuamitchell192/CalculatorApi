@@ -5,6 +5,7 @@ namespace Api.Calculations;
 public interface ICalculationsService
 {
     Task<bool> AddCalculation(Calculation calculation);
+    Task<bool> UpdateCalculation(Calculation calculation);
     Task<List<Calculation>> GetAllCalculations();
     Task<Calculation?> GetCalculation(Guid id);
 }
@@ -16,6 +17,13 @@ public class CalculationService(AppDbContext db) : ICalculationsService
         await db.AddAsync(calculation);
         int entitiesSaved = await db.SaveChangesAsync();
 
+        return entitiesSaved > 0;
+    }
+
+    public async Task<bool> UpdateCalculation(Calculation calculation)
+    {
+        db.Entry(calculation).State = EntityState.Modified;
+        int entitiesSaved = await db.SaveChangesAsync();
         return entitiesSaved > 0;
     }
 

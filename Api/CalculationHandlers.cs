@@ -42,14 +42,7 @@ public static class CalculationHandlers
         }
 
         // Calculate Result
-        var result = requestBody.Operation.ToLower() switch
-        {
-            "add" => Calculator.Add(requestBody.Operands),
-            "subtract" => Calculator.Subtract(requestBody.Operands),
-            "multiply" => Calculator.Multiply(requestBody.Operands),
-            "divide" => Calculator.Divide(requestBody.Operands),
-            _ => throw new InvalidOperationException("Unexpected operation in request body")
-        };
+        var result = Calculator.Calculate(requestBody.Operation, requestBody.Operands);
 
         var calculation = new Calculation
         {
@@ -65,6 +58,34 @@ public static class CalculationHandlers
         return saved
             ? Results.Created($"calculations/{calculation.Id}", new { calculation.Result })
             : Results.InternalServerError("Failed to save calculation.");
+    }
+
+    public static async Task<IResult> HandleUpdateCalculation(HttpContext ctx, Guid id, CalculationRequestBody requestBody,
+        ICalculationsService calculationService)
+    {
+        var existingCalculation = await calculationService.GetCalculation(id);
+        if (existingCalculation == null)
+        {
+            return Results.NotFound();
+        }
+        
+        var validationResult = ctx.Request.Validate(requestBody);
+        if (!validationResult.IsValid)
+        {
+            return Results.UnprocessableEntity(validationResult.GetFormattedErrors());
+        }
+        
+        var result = Calculator.Calculate(requestBody.Operation, requestBody.Operands);
+        
+        existingCalculation.Operands = requestBody.Operands;
+        existingCalculation.Operation = requestBody.Operation;
+        existingCalculation.Result = result;
+
+        bool saved = await calculationService.UpdateCalculation(existingCalculation);
+
+        return saved
+            ? Results.Ok(new { result })
+            : Results.InternalServerError("Failed to update calculation.");
     }
     
     public static async Task<IResult> HandleGetAllCalculations(HttpContext ctx, ICalculationsService calculationService)
