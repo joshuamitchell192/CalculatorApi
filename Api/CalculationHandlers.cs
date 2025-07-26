@@ -12,22 +12,27 @@ public class CalculationRequestBody
 
 public class CalculationRequestBodyValidator : AbstractValidator<CalculationRequestBody>
 {
-    private readonly HashSet<string> _validOperators = new ([ "add", "subtract", "multiply", "divide" ], StringComparer.OrdinalIgnoreCase);
+    private readonly HashSet<string> _validOperators =
+        new(["add", "subtract", "multiply", "divide"], StringComparer.OrdinalIgnoreCase);
+
     public CalculationRequestBodyValidator()
     {
         RuleFor(request => request.Operands).NotEmpty();
         RuleFor(request => request.Operands).Must(o => o.Count >= 2).WithMessage("Must have at least 2 operands.");
         RuleFor(request => request.Operation).Must(_validOperators.Contains).WithMessage("Invalid Operator.");
-        When(request => request.Operation.Equals("divide", StringComparison.OrdinalIgnoreCase), () =>
-        {
-            RuleFor(request => request.Operands).Must(o => !o.Skip(1).Contains(0)).WithMessage("Division by zero is not allowed.");
-        });
+        When(request => request.Operation.Equals("divide", StringComparison.OrdinalIgnoreCase),
+            () =>
+            {
+                RuleFor(request => request.Operands).Must(o => !o.Skip(1).Contains(0))
+                    .WithMessage("Division by zero is not allowed.");
+            });
     }
 }
 
 public static class CalculationHandlers
 {
-    public static async Task<IResult> HandleAddCalculation(HttpContext ctx, CalculationRequestBody requestBody, ICalculationsService calculationService)
+    public static async Task<IResult> HandleAddCalculation(HttpContext ctx, CalculationRequestBody requestBody,
+        ICalculationsService calculationService)
     {
         // Validate Request
         var validationResult = ctx.Request.Validate(requestBody);
@@ -35,7 +40,7 @@ public static class CalculationHandlers
         {
             return Results.UnprocessableEntity(validationResult.GetFormattedErrors());
         }
-        
+
         // Calculate Result
         var result = requestBody.Operation.ToLower() switch
         {
@@ -57,8 +62,17 @@ public static class CalculationHandlers
 
         bool saved = await calculationService.AddCalculation(calculation);
 
-        return saved ?
-            Results.InternalServerError("Failed to save calculation.")
-            : Results.Created($"calculations/{calculation.Id}", new { calculation.Result });
+        return saved
+            ? Results.Created($"calculations/{calculation.Id}", new { calculation.Result })
+            : Results.InternalServerError("Failed to save calculation.");
+    }
+
+    public static async Task<IResult> HandleGetAllCalculations(HttpContext ctx, ICalculationsService calculationService)
+    {
+        var calculations = await calculationService.GetAllCalculations();
+        var calculationDtoList =
+            calculations.Select<Calculation, CalculationDto>(calc => new CalculationDto(calc));
+
+        return Results.Ok(calculationDtoList);
     }
 }

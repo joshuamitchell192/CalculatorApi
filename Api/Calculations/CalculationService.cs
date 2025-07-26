@@ -1,25 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace Api.Calculations;
 
 public interface ICalculationsService
 {
     Task<bool> AddCalculation(Calculation calculation);
+    Task<List<Calculation>> GetAllCalculations();
 }
 
-public class CalculationService : ICalculationsService
+public class CalculationService(AppDbContext db) : ICalculationsService
 {
-
-    private readonly AppDbContext _db;
-
-    public CalculationService(AppDbContext dbContext)
-    {
-        _db = dbContext;
-    }
-
     public async Task<bool> AddCalculation(Calculation calculation)
     {
-        await _db.AddAsync(calculation);
-        int entitiesSaved = await _db.SaveChangesAsync();
+        await db.AddAsync(calculation);
+        int entitiesSaved = await db.SaveChangesAsync();
 
         return entitiesSaved > 0;
+    }
+
+    public async Task<List<Calculation>> GetAllCalculations()
+    {
+        return await db.Calculations.ToListAsync();
     }
 }

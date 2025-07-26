@@ -29,7 +29,7 @@ public class AppDbContext : DbContext
             .Property(e => e.CreatedAt)
             .HasConversion(
                 v => v.ToDateTimeUtc(),
-                v => Instant.FromDateTimeUtc(v)
+                v => Instant.FromDateTimeUtc(DateTime.SpecifyKind(v, DateTimeKind.Utc))
             );
     }
 }

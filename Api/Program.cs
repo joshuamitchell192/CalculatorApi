@@ -24,5 +24,6 @@ public class CalculationModule : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder routes)
     {
         routes.MapPost("/calculations", CalculationHandlers.HandleAddCalculation);
+        routes.MapGet("/calculations", CalculationHandlers.HandleGetAllCalculations);
     }
 }
