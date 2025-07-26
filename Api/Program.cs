@@ -25,5 +25,6 @@ public class CalculationModule : ICarterModule
     {
         routes.MapPost("/calculations", CalculationHandlers.HandleAddCalculation);
         routes.MapGet("/calculations", CalculationHandlers.HandleGetAllCalculations);
+        routes.MapGet("/calculations/{id:guid}", CalculationHandlers.HandleGetCalculation);
     }
 }

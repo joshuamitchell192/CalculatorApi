@@ -66,7 +66,7 @@ public static class CalculationHandlers
             ? Results.Created($"calculations/{calculation.Id}", new { calculation.Result })
             : Results.InternalServerError("Failed to save calculation.");
     }
-
+    
     public static async Task<IResult> HandleGetAllCalculations(HttpContext ctx, ICalculationsService calculationService)
     {
         var calculations = await calculationService.GetAllCalculations();
@@ -74,5 +74,16 @@ public static class CalculationHandlers
             calculations.Select<Calculation, CalculationDto>(calc => new CalculationDto(calc));
 
         return Results.Ok(calculationDtoList);
+    }
+
+    public static async Task<IResult> HandleGetCalculation(HttpContext ctx, Guid id, ICalculationsService calculationService)
+    {
+        var calculation = await calculationService.GetCalculation(id);
+        if (calculation == null)
+        {
+            return Results.NotFound();
+        }
+        
+        return Results.Ok(calculation);
     }
 }
