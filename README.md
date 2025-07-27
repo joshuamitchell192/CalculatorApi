@@ -33,4 +33,4 @@ Node: Entity framework migrations are run on startup.
 
 ## Further improvements
 - OpenApi integration for api documentation.
-- Implement a logger with a variable to change the logging level.
+- Implement a logger with an environment variable to change the logging level.
