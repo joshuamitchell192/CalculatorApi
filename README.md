@@ -8,17 +8,16 @@ Node: Entity framework migrations are run on startup.
 
 ## Design Decisions
 
-### Project Layout
-- Route Modules
-- Request Handlers
-- Service Layer
-- Entity Framework Core
+### Project Layout/Layers
+- Route Modules - Maps the api routes paths to the appropriate handlers.
+- Request Handlers - Handles the request
+- Service Layer - Interfaces with entity framework to save, update, read and delete calculation entities.
+- Entity Framework Core - ORM for handling queries etc.
 - Sqlite
 
 ### Libaries
 - Using entity framework core to simplify the database access layer and migrations.
 - Using the Carter library because of it's use of the IEndpointRouteBuilder to keep the route mappings close together and separates the route mapping from their implementation. It also includes integration with FluentValidation to make validation simple, more declarative and reusable for both creation and updates.
-- 
 
 ## Assumptions
 - A double data type is sufficient for both operands and the result data types.
