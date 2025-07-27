@@ -45,19 +45,10 @@ public static class CalculationHandlers
         // Calculate Result
         var result = Calculator.Calculate(requestBody.Operation, requestBody.Operands);
 
-        var calculation = new Calculation
-        {
-            Id = Guid.NewGuid(),
-            Operation = requestBody.Operation.ToLower(),
-            Operands = requestBody.Operands,
-            Result = result,
-            CreatedAt = NodaTime.SystemClock.Instance.GetCurrentInstant()
-        };
+        Calculation? savedCalculationEntity = await calculationService.AddCalculation(requestBody.Operation, requestBody.Operands, result);
 
-        bool saved = await calculationService.AddCalculation(calculation);
-
-        return saved
-            ? Results.Created($"calculations/{calculation.Id}", new { calculation.Result })
+        return savedCalculationEntity != null
+            ? Results.Created($"calculations/{savedCalculationEntity.Id}", new { savedCalculationEntity.Result })
             : Results.InternalServerError("Failed to save calculation.");
     }
 
