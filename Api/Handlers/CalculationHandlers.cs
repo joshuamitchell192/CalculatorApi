@@ -122,7 +122,7 @@ public static class CalculationHandlers
                 return Results.InternalServerError("Failed to delete calculation.");
             }
 
-            return Results.NoContent();
+            return Results.Ok();
         }
         catch (EntityNotFoundException)
         {
