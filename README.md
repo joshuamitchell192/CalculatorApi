@@ -26,7 +26,7 @@ Nodes:
 - A double was chosen for the operands data type because the requirements specified that the operands would be a javascript number type, implying that inputs could be either an integer or floating point value.
 - Only a relatively small number of clients would be making requests to the API.
 
-## AWS
+## Rough plan for moving to AWS
 - Create a docker image to build and run the application, saving the image to somewhere like github or AWS ECR via github actions.
 - Create a EC2 VM instance with appropriate IAM roles etc.
 - Assign Static IP for the EC2 instance with Elastic IP.
