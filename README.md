@@ -4,7 +4,7 @@
 1. Navigate the Api directory.
 2. Run `dotnet run` to start api server
 
-Nodes:
+Notes:
 - Entity framework migrations are run on startup.
 - The API targets .NET 9
 
