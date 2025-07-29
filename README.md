@@ -22,7 +22,7 @@ Notes:
 - Entity Framework Core - ORM for handling queries etc.
 - Sqlite - Database for storing the entities.
 
-### Libaries
+### Libraries
 - Using entity framework core to simplify the database access layer and migrations.
 - Using the Carter library because of it's use of the IEndpointRouteBuilder to keep the route mappings close together and separates the route mapping from their implementation. It also includes integration with FluentValidation to make validation simple, more declarative and reusable for both creation and updates.
 - NodaTime allows for more declartive datetime types to improve consistency, utilising more precise data types that avoid ambiguity.
@@ -42,5 +42,5 @@ Notes:
 ## Further improvements
 - OpenApi integration for api documentation.
 - Implement a logger with an environment variable to change the logging level.
-- Further levels of abstraction could be added to break up the service layer to separate database opeations from any validation or other logic.
+- Further levels of abstraction could be added to break up the service layer to separate database operations from any validation or other logic.
 - Separation of write and read operations (CQRS) if db operations became more complex and had different scaling requirements.
