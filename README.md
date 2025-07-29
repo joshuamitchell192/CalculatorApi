@@ -8,12 +8,17 @@ Notes:
 - Entity framework migrations are run on startup.
 - The API targets .NET 9
 
-## Design Decisions
+## API Endpoints
+- POST   - /calculations      : Creates a new calculation entity, returns the calculation result.
+- GET    - /calculations      : Returns all calculation entities.
+- GET    - /calculations/{id} : Returns the calculation entity with the associated id.
+- PUT    - /calculations/{id} : Updates the operands and operations of the calculation entity with the associated id.
+- DELETE - /calculations/{id} : Deletes the calculation entity with the associated id.
 
+## Design Decisions
 - Using minimal API like implementation for simplicity to allow for better maintainability.
 - The service layer separates any database operations from the handler logic to allow mocking of database operations.
 - Utilising entity framework core to simplify database operations, handle migrations, manage domain model and database column type mapping.
-
 
 ### Project Layout/Layers
 - Route Modules - Maps the api routes paths to the appropriate handlers.
